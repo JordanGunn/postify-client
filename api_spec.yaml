@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: Postify API
+  description: Producer/Consumer documentation for the Postify platform.
+  termsOfService: https://example.com/api/tos
+  contact:
+    name: Postify API Support
+    url: https://example.com/api/support
+    email: support@example.com
+  license:
+    name: CC BY-NC 4.0
+    url: https://creativecommons.org/licenses/by-nc/4.0
+  version: 0.1.0
+servers:
+  - url: https://api.example.com/0.1.0
+    description: General purpose
+paths:
+  "/user/{userid}":
+    get:
+      responses:
+        "200":
+          description: the user returned
+          content:
+            application/json:
+              schema:
+                title: "User"
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    format: uuid
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  userName:
+                    type: string
+                  password:
+                    type: string
+                  dateJoined:
+                    type: string
+                    format: date
+    parameters:
+      - name: userid
+        in: path
+        required: true
+        description: Returns all information for a single user
+        schema:
+          type: string
+          format: uuid
+  "/user":
+    get:
+      responses:
+        "200":
+          description: Gets all users
+          
+  "/projects/{projectid}":
+    get:
+      summary: Find project by projectid
+      description: Returns a single project
+      operationId: getProjectById
+      responses:
+        "200":
+          description: Project for the projectid return
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  seeker:
+                    type: string
+    parameters:
+      - name: projectid
+        in: path
+        required: true
+        description: Returns all information for a single project
+        schema:
+          type: string
+
+  "/projects":
+    post:
+      summary: Create a new project
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              title: "Project"
+              type: object
+              properties:
+                title:
+                  type: string
+                difficulty:
+                  type: integer
+      responses:
+        "201":
+          description: Created
