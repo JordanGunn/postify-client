@@ -1,1 +1,50 @@
-temp
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Postify API",
+    "description": "Producer/Consumer documentation for the Postify platform.",
+    "termsOfService": "https://example.com/api/tos",
+    "contact": {
+      "name": "Postify API Support",
+      "url": "https://example.com/api/support",
+      "email": "support@example.com"
+    },
+    "license": {
+      "name": "CC BY-NC 4.0",
+      "url": "https://creativecommons.org/licenses/by-nc/4.0"
+    },
+    "version": "0.1.0"
+  },
+  "servers": [
+    { "url": "https://api.example.com/0.1.0",
+      "description": "General purpose" }
+  ],
+  "paths": {
+    "/user/{PID}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Retrieved all users"
+          }
+        }
+      },
+      "parameters": [
+        { "name": "PID",
+          "in": "path",
+          "required": true,
+          "schema": {
+            
+          }}
+      ]
+    },
+    "/project": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Project was created"
+          }
+        }
+      }
+    },
+  }
+}
