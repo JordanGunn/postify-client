@@ -9,7 +9,7 @@ export default createStore({
     },
     actions: {
         // here !!!!
-        setAuth: ({commit}, auth) => commit('SET_AUTH', auth)
+        setAuth: ({ commit }, auth) => commit('SET_AUTH', auth)
     },
     modules: {}
 })

@@ -1,5 +1,4 @@
 <template>
-
   <Nav />
   <main class="form-signin">
     <router-view />

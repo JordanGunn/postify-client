@@ -4,21 +4,20 @@
 
 <script>
 import {onMounted, ref} from "vue";
-import useStore from "vuex/dist/vuex.mjs";
+import {useStore} from "vuex";
 
 export default {
   // eslint-disable-next-line
   name: "Home",
   setup() {
     const message = ref("Not logged in...");
-    const store = useStore()
+    const store = useStore();
 
     onMounted(async () => {
       try {
         const response = await fetch("http://localhost:8080/api/user", {
-          method: 'GET',
           headers: {
-            'Content-type': 'application/json'
+            'Content-Type': 'application/json'
           },
           credentials: 'include'
         });
