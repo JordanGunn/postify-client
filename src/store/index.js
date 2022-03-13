@@ -8,7 +8,6 @@ export default createStore({
         SET_AUTH: (authenticated , auth) => this.state.authenticated = auth
     },
     actions: {
-        // here !!!!
         setAuth: ({ commit }, auth) => commit('SET_AUTH', auth)
     },
     modules: {}

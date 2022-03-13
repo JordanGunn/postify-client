@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="=UTF-8" />
+    <title>Postify API Admin</title>
+    <!-- <link rel="stylesheet" href="./store.css"> -->
+
+    <style>
+        body {
+            background-color: thistle;
+        }
+
+        #maincontainer {
+            border: 10px solid blue;
+            width: 60%;
+            margin: auto;
+            background-color: cornflowerblue;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #responsecontainer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 80%;
+        }
+
+        #responseinputcontainer {
+            width: 30%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 2%;
+        }
+
+        .title {
+            text-align: center;
+            color: white;
+            font-weight: bolder;
+            font-size: 40pt;
+        }
+
+        .button {
+            display: block;
+            font-weight: bolder;
+            font-size: 10pt;
+            margin-bottom: 2%;
+        }
+
+        .userbutton {
+            display: block;
+            font-weight: bolder;
+            font-size: 10pt;
+            margin-left: 2%;
+        }
+
+        #usercontainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .wordinput {
+            display: block;
+            width: 90%;
+            height: 2em;
+            margin-left: 1%;
+            margin-right: 1%;
+        }
+
+        #userinputcontainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            margin-top: 4%;
+            margin-bottom: 4%;
+            /* justify-content: space-around;
+            align-items: center; */
+        }
+
+        #userinfo {
+            display: block;
+            width: 100%;
+            height: 10em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="maincontainer">
+        <p class="title">Postify API Admin</p>
+
+        <div id="responsecontainer">
+            <textarea id="userinfo" readonly="readonly"></textarea>
+            <button id="submitbutton" class="userbutton" onclick="getAllUsers()">Get All Users</button>
+        </div>
+
+        <div id="responseinputcontainer">
+            <input id="getuserinput" class="wordinput" placeholder="Enter Username..." type="text">
+            <button id="submitbutton" class="userbutton" onclick="getUser()">Get User</button>
+        </div>
+
+        <div id="usercontainer">
+            <div id="userinputcontainer">
+                <input id="firstnameinput" class="wordinput" placeholder="Enter First Name..." type="text">
+                <input id="lastnameinput" class="wordinput" placeholder="Enter Last Name..." type="text">
+                <input id="usernameinput" class="wordinput" placeholder="Enter Username..." type="text">
+                <input id="passwordinput" class="wordinput" placeholder="Enter Password..." type="text">
+            </div>
+            <button id="submitbutton" class="button" onclick="addUser()">Add User</button>
+        </div>
+
+    </div>
+
+    <!-- 
+    <script src="/reader.js"></script> -->
+    <script>
+        const PUT = "PUT";
+        const GET = "GET";
+        const xhttp = new XMLHttpRequest();
+        const endPointRoot = "http://localhost:8888/4537/termproject/api/v1/";
+        const getAllUsersRoot = "http://localhost:8888/4537/termproject/api/v1/users";
+        const createUsersRoot = "http://localhost:8888/4537/termproject/api/v1/users";
+        const getUserRoot = "http://localhost:8888/4537/termproject/api/v1/user/?userId=";
+
+        const getUserInput = document.getElementById("getuserinput");
+        const firstNameInput = document.getElementById("firstnameinput");
+        const lastNameInput = document.getElementById("lastnameinput");
+        const userNameInput = document.getElementById("usernameinput");
+        const passwordInput = document.getElementById("passwordinput");
+        const userInfo = document.getElementById("userinfo");
+
+        function getAllUsers() {
+            xhttp.open(GET, getAllUsersRoot, true);
+            xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+            xhttp.send();
+            xhttp.onreadystatechange = function () {
+                // console.log(this.responseText);
+                if (this.readyState == 4 && this.status == 200) {
+                    const users = JSON.parse(this.responseText);
+                    userInfo.innerHTML = ``;
+                    for (let i = 0; i < users.length; i++) {
+                        userInfo.innerHTML += `----- User Id: '${users[i].UserId}'-----\n`;
+                        userInfo.innerHTML += `Username: '${users[i].UserName}'\n`;
+                        userInfo.innerHTML += `First Name: '${users[i].FirstName}'\n`;
+                        userInfo.innerHTML += `Last Name: '${users[i].LastName}'\n`;
+                        userInfo.innerHTML += `Date Joined: '${users[i].JoinDate}'\n`;
+                        userInfo.innerHTML += `\n`;
+                    }
+                }
+            }
+        }
+
+        function getUser() {
+            let userId = getUserInput.value;
+            let url = getUserRoot + userId;
+            // console.log(url);
+
+            xhttp.open(GET, url, true);
+            xhttp.setRequestHeader("Content-type", "application/json; charset=utf-8")
+            xhttp.send();
+            xhttp.onreadystatechange = function () {
+                // console.log(this.responseText);
+                if (this.readyState == 4 && this.status == 200) {
+                    const users = JSON.parse(this.responseText);
+                    // console.log(users);
+
+                    if (users.length == 0) {
+                        userInfo.innerHTML = "User Id not found.";
+                    } else {     
+                        userInfo.innerHTML = `----- User Id: '${users[0].UserId}'-----\n`;
+                        userInfo.innerHTML += `Username: '${users[0].UserName}'\n`;
+                        userInfo.innerHTML += `First Name: '${users[0].FirstName}'\n`;
+                        userInfo.innerHTML += `Last Name: '${users[0].LastName}'\n`;
+                        userInfo.innerHTML += `Date Joined: '${users[0].JoinDate}'\n`;
+                        userInfo.innerHTML += `\n`;
+                    }
+                    
+                }
+            }
+        }
+
+        function addUser() {
+            // console.log(nameInput.value);
+            // if (nameInput.value == "" || scoreInput.value == "" || isNaN(scoreInput.value)) {
+            //     responseBox.innerHTML = "Invalid Input!";
+            // } else {
+            //     sendUserData();
+            // }
+            sendUserData();
+        }
+
+        function sendUserData() {
+            let firstName = firstNameInput.value;
+            let lastName = lastNameInput.value;
+            let userName = userNameInput.value;
+            let password = passwordInput.value;
+            let paramsJson = {
+                FirstName: firstName,
+                LastName: lastName,
+                UserName: userName,
+                Password: password
+            };
+
+            console.log(JSON.stringify(paramsJson));
+
+            xhttp.open(PUT, createUsersRoot, true);
+            xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            xhttp.send(JSON.stringify(paramsJson));
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    userInfo.innerHTML = this.responseText;
+                }
+            };
+        }
+    </script>
+</body>
+
+</html>
