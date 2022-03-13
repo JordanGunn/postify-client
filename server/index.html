@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>COMP4537 - Lab1</title>
+
+    <style>
+        body {
+            background-color: thistle;
+        }
+
+        #maincontainer {
+            border: 10px solid blue;
+            width: 80%;
+            margin: auto;
+            background-color: cornflowerblue;
+            margin-bottom: 2%;
+        }
+
+        #buttoncontainer {
+            border: 10px solid blue;
+            width: 20%;
+            margin: auto;
+            background-color: cornflowerblue;
+        }
+
+        .button {
+            display: block;
+            margin: 0 auto;
+            font-weight: bolder;
+            font-size: 20pt;
+            margin-top: 4%;
+            margin-bottom: 4%;
+        }
+
+        .maintext {
+            text-align: center;
+            color: white;
+            font-weight: bolder;
+            font-size: 20pt;
+        }
+    </style>
+</head>
+    
+<body>
+    <div id="maincontainer">
+        <p class="maintext">COMP4537 - Lab1</p>
+        <p class="maintext">Lingxuan Wei #A00876590</p>
+        <p class="maintext">My Personal NoteTaker App</p>
+    </div>
+
+    <div id="buttoncontainer">
+        <button id="writer" class="button" onclick="buttonHandler(this.id)">Writer</button>
+        <button id="reader" class="button" onclick="buttonHandler(this.id)">Reader</button>
+    </div>
+
+    <script>
+
+        function buttonHandler(id) {
+            window.location.href = id + ".html";
+        }
+
+    </script>
+</body>
+</html>
