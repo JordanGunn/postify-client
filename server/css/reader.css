@@ -1,0 +1,40 @@
+body {
+    background-color: thistle;
+}
+
+#maincontainer {
+    border: 10px solid blue;
+    width: 60%;
+    margin: auto;
+    background-color: cornflowerblue;
+    margin-bottom: 2%;
+}
+
+.maintext {
+    text-align: center;
+    color: white;
+    font-weight: bolder;
+    font-size: 20pt;
+}
+
+#contentcontainer {
+    border: 10px solid blue;
+    width: 15%;
+    margin: auto;
+    background-color: cornflowerblue;
+}
+
+.button {
+    display: block;
+    margin: 0 auto;
+    font-weight: bolder;
+    font-size: 20pt;
+    margin-top: 8%;
+    margin-bottom: 4%;
+}
+
+#timer {
+    text-align: center;
+    font-size: 15pt;
+    font-weight: bolder;
+}
