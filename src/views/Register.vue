@@ -1,84 +1,47 @@
 <template>
-  <div id="register-page">
-    <div>
-      <form @submit.prevent="submit">
-        <div>
-          <label for="username">Username:</label>
-          <input type="text" name="username" v-model="form.username">
-        </div>
-        <div>
-          <label for="name">Full Name:</label>
-          <input type="text" name="name" v-model="form.full_name">
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input type="password" name="password" v-model="form.password">
-        </div>
-        <button type="submit"> Submit</button>
-      </form>
-    </div>
-    <p v-if="showError" id="error">Username already exists</p>
-  </div>
+  <form @submit.prevent="submit">
+    <h1 class="h3 mb-3 fw-normal">Registration</h1>
+
+    <input v-model="data.name" class="form-control" placeholder="Name" required>
+
+    <input v-model="data.email" type="email" class="form-control" placeholder="Email" required>
+
+    <input v-model="data.password" type="password" class="form-control" placeholder="Password" required>
+
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+  </form>
 </template>
 
 <script>
-import { mapActions } from "vuex"
-export default {
-  name: "RegisterPage",
-  components: {},
-  data() {
-    return {
-      form: {
-        username: "",
-        password: "",
-        name: "",
-      },
-      showError: false,
-    }
-  },
-  methods: {
-    ...mapActions(["Register"]),
+import {reactive} from 'vue';
+import {useRouter} from "vue-router";
 
-    async submit() {
-      try {
-        await this.Register(this.form);
-        this.$router.push("/posts");
-        this.showError = false
-      } catch (error) {
-        this.showError = true
-      }
-    },
+export default {
+  // eslint-disable-next-line
+  name: "Register",
+  setup() {
+    const data = reactive({
+      name: '',
+      email: '',
+      password: ''
+    });
+
+    const router = useRouter();
+
+    const submit = async () => {
+      await fetch ("http://localhost:8080/api/register", {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      await router.push('/login');
+    }
+    return {
+      data,
+      submit
+    }
   }
 }
-
-
 </script>
-
-<style scoped>
-* {
-  box-sizing: border-box;
-}
-label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
-}
-button[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius:30px;
-}
-button[type=submit]:hover {
-  background-color: #45a049;
-}
-input {
-  margin: 5px;
-  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-  padding:10px;
-  border-radius:30px;
-}
-#error {
-  color: red;
-}
-</style>

@@ -1,14 +1,15 @@
-import Vuex from 'vuex';
-import Vue from 'vue';
-import createPersistedState from "vuex-persistedstate";
-import auth from './modules/auth';
+import {createStore} from 'vuex'
 
-// Load Vuex
-Vue.use(Vuex);
-// Create store
-export default new Vuex.Store({
-    modules: {
-        auth
+export default createStore({
+    state: {
+        authenticated: false
     },
-    plugins: [createPersistedState()]
-});
+    mutations: {
+        SET_AUTH: (authenticated , auth) => this.state.authenticated = auth
+    },
+    actions: {
+        // here !!!!
+        setAuth: ({commit}, auth) => commit('SET_AUTH', auth)
+    },
+    modules: {}
+})

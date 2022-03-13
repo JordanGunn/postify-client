@@ -1,79 +1,62 @@
 <template>
-  <div class="login">
-    <div>
-      <form @submit.prevent="submit">
-        <div>
-          <label for="username">Username:</label>
-          <input type="text" name="username" v-model="form.username" />
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input type="password" name="password" v-model="form.password" />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-      <p v-if="showError" id="error">Username or Password is incorrect</p>
+  <form id="login" @submit.prevent="submit">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+    <div class="form-floating">
+      <input
+          v-model="data.email"
+          type="email"
+          class="form-control"
+          id="floatingInput"
+          placeholder="name@example.com"
+      >
+      <!--        <label for="floatingInput">Email address</label>-->
     </div>
-  </div>
+    <div class="form-floating">
+      <input
+          v-model="data.password"
+          type="password"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Password"
+      >
+      <!--        <label for="floatingPassword">Password</label>-->
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+  </form>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { reactive } from "vue";
+import {useRouter} from "vue-router";
 export default {
-  name: "LoginPage",
-  components: {},
-  data() {
-    return {
-      form: {
-        username: "",
-        password: "",
-      },
-      showError: false
-    };
-  },
-  methods: {
-    ...mapActions(["LogIn"]),
-    async submit() {
-      const User = new FormData();
-      User.append("username", this.form.username);
-      User.append("password", this.form.password);
-      try {
-        await this.LogIn(User);
-        this.$router.push("/posts");
-        this.showError = false
-      } catch (error) {
-        this.showError = true
-      }
-    },
-  },
-};
-</script>
+  // eslint-disable-next-line
+  name: "Login",
 
-<style scoped>
-* {
-  box-sizing: border-box;
+  setup() {
+    const data = reactive({
+      email: '',
+      password: '',
+    });
+
+    const router = useRouter();
+
+    const submit = async () => {
+      await fetch ("http://localhost:8080/api/login", {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify(data)
+      });
+      await router.push('/');
+    }
+
+    return {
+      data,
+      submit
+    }
+  }
 }
-label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
-}
-button[type=submit] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius:30px;
-}
-button[type=submit]:hover {
-  background-color: #45a049;
-}
-input {
-  margin: 5px;
-  box-shadow:0 0 15px 4px rgba(0,0,0,0.06);
-  padding:10px;
-  border-radius:30px;
-}
-#error {
-  color: red;
-}
-</style>
+</script>
