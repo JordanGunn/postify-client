@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>COMP4537 - Lab1</title>
+    <meta charset="=UTF-8" />
+    <title>Postify API Admin</title>
+    <!-- <link rel="stylesheet" href="./store.css"> -->
 
     <style>
         body {
@@ -10,55 +13,142 @@
 
         #maincontainer {
             border: 10px solid blue;
-            width: 80%;
+            width: 60%;
             margin: auto;
             background-color: cornflowerblue;
-            margin-bottom: 2%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        #buttoncontainer {
-            border: 10px solid blue;
-            width: 20%;
-            margin: auto;
-            background-color: cornflowerblue;
+        #responsecontainer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 80%;
+        }
+
+        #responseinputcontainer {
+            width: 30%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 2%;
+        }
+
+        .title {
+            text-align: center;
+            color: white;
+            font-weight: bolder;
+            font-size: 40pt;
         }
 
         .button {
             display: block;
-            margin: 0 auto;
             font-weight: bolder;
-            font-size: 20pt;
-            margin-top: 4%;
-            margin-bottom: 4%;
+            font-size: 10pt;
+            margin-bottom: 2%;
         }
 
-        .maintext {
-            text-align: center;
-            color: white;
+        .userbutton {
+            display: block;
             font-weight: bolder;
-            font-size: 20pt;
+            font-size: 10pt;
+            margin-left: 2%;
+        }
+
+        #usercontainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .wordinput {
+            display: block;
+            width: 90%;
+            height: 2em;
+            margin-left: 1%;
+            margin-right: 1%;
+        }
+
+        #userinputcontainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            margin-top: 4%;
+            margin-bottom: 4%;
+            /* justify-content: space-around;
+            align-items: center; */
+        }
+
+        #userinfo {
+            display: block;
+            width: 100%;
+            height: 10em;
         }
     </style>
 </head>
-    
+
 <body>
     <div id="maincontainer">
-        <p class="maintext">COMP4537 - Lab1</p>
-        <p class="maintext">Lingxuan Wei #A00876590</p>
-        <p class="maintext">My Personal NoteTaker App</p>
+        <p class="title">Postify API Admin</p>
+
+        <div id="responsecontainer">
+            <textarea id="userinfo" readonly="readonly"></textarea>
+        </div>
+
+        <div id="usercontainer">
+            <div id="userinputcontainer">
+                <input id="usernameinput" class="wordinput" placeholder="Enter Username..." type="text">
+                <input id="passwordinput" class="wordinput" placeholder="Enter Password..." type="text">
+            </div>
+            <button id="submitbutton" class="button" onclick="addUser()">Add User</button>
+        </div>
+
     </div>
 
-    <div id="buttoncontainer">
-        <button id="writer" class="button" onclick="buttonHandler(this.id)">Writer</button>
-        <button id="reader" class="button" onclick="buttonHandler(this.id)">Reader</button>
-    </div>
-
+    <!-- 
+    <script src="/reader.js"></script> -->
     <script>
+        const PUT = "PUT";
+        const xhttp = new XMLHttpRequest();
+        const loginUserRoot = "http://localhost:8888/4537/termproject/api/v1/login";
 
-        function buttonHandler(id) {
-            window.location.href = id + ".html";
+        const userNameInput = document.getElementById("usernameinput");
+        const passwordInput = document.getElementById("passwordinput");
+        const userInfo = document.getElementById("userinfo");
+
+        function addUser() {
+            // console.log(nameInput.value);
+            // if (nameInput.value == "" || scoreInput.value == "" || isNaN(scoreInput.value)) {
+            //     responseBox.innerHTML = "Invalid Input!";
+            // } else {
+            //     sendUserData();
+            // }
+            sendUserData();
         }
 
+        function sendUserData() {
+            let userName = userNameInput.value;
+            let password = passwordInput.value;
+            let paramsJson = {
+                UserName: userName,
+                Password: password
+            };
+
+            console.log(JSON.stringify(paramsJson));
+
+            xhttp.open(PUT, loginUserRoot, true);
+            xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+            xhttp.send(JSON.stringify(paramsJson));
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    userInfo.innerHTML = this.responseText;
+                }
+            };
+        }
     </script>
 </body>
+
 </html>
