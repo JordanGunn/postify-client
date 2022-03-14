@@ -63,6 +63,7 @@ app.put(createUsersRoot, (req, res) => {
         }
     });
     req.on('end', function() {
+        // SECUIRITY FLAW, USE PARAMETERIZED QUERIES
         const sqlQuery = `INSERT INTO users(LastName, FirstName, UserName, Password, JoinDate) VALUES ('${JSON.parse(body).LastName}', '${JSON.parse(body).FirstName}', '${JSON.parse(body).UserName}', '${JSON.parse(body).Password}', NOW())`;
         
         // console.log(sqlQuery);
