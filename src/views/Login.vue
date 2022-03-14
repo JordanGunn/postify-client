@@ -3,16 +3,16 @@
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     <div class="form-floating">
       <input
-          v-model="data.username"
-          type="email"
+          v-model="data.UserName"
+          type="text"
           class="form-control"
-          placeholder="name@example.com"
+          placeholder="Username"
           required
       >
     </div>
     <div class="form-floating">
       <input
-          v-model="data.password"
+          v-model="data.Password"
           type="password"
           class="form-control"
           placeholder="Password"
@@ -27,6 +27,7 @@
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import appConfig from "../../appConfig"
+import store from "@/store/index"
 
 export default {
   // eslint-disable-next-line
@@ -34,14 +35,14 @@ export default {
 
   setup() {
     const data = reactive({
-      username: '',
-      password: '',
+      UserName: '',
+      Password: '',
     });
 
     const router = useRouter();
 
     const submit = async () => {
-      await fetch (`${appConfig.PATH_API_ABSOLUTE}/login`, {
+      const response = await fetch (`${appConfig.PATH_API_ABSOLUTE}/login`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -49,6 +50,9 @@ export default {
         credentials: 'include',
         body: JSON.stringify(data)
       });
+      await store.dispatch('setAuth', (response.ok))
+      
+      console.log(response);
       await router.push('/');
     }
 

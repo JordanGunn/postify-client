@@ -8,7 +8,7 @@ export default createStore({
         // username: ""
     },
     mutations: {
-        SET_AUTH: (authenticated , auth) => this.state.authenticated = auth,
+        SET_AUTH: (state , auth) => state.authenticated = auth,
         // setAccessToken: (state, token) => state.accessToken = token,
         // setAccountId: (state, token) => state.accountId = token,
         // setUsername: (state, username) => state.username = username,

@@ -12,10 +12,10 @@ const getAllUsers = () =>
 // check to see if second arg goes into body !!!!!!!!!!!!!!!
 const addUser = (firstName, lastName, userName, password) =>
     client.post(`/4537/termproject/api/v1/user`, {
-        firstName: firstName,
-        lastName: lastName,
-        userName: userName,
-        password: password,
+        FirstName: firstName,
+        LastName: lastName,
+        UserName: userName,
+        Password: password,
 })
 
 export {

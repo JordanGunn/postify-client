@@ -3,6 +3,7 @@ const mysql = require("mysql");
 const url = require("url");
 const PORT = 8888;
 const app = express();
+// eslint-disable-next-line
 const endPointRoot = "/4537/termproject/api/v1/";
 const getUserRoot = "/4537/termproject/api/v1/user";
 const getAllUsersRoot = "/4537/termproject/api/v1/users";
@@ -23,7 +24,8 @@ db.connect((err) => {
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    // res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Origin", "http://localhost:8080");
     res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
     res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Request-With");
     next();
@@ -64,6 +66,7 @@ app.put(createUsersRoot, (req, res) => {
         const sqlQuery = `INSERT INTO users(LastName, FirstName, UserName, Password, JoinDate) VALUES ('${JSON.parse(body).LastName}', '${JSON.parse(body).FirstName}', '${JSON.parse(body).UserName}', '${JSON.parse(body).Password}', NOW())`;
         
         // console.log(sqlQuery);
+        // eslint-disable-next-line
         db.query(sqlQuery, (err, result) => {
             if(err) {
                 res.status(404).send(`Unable to store '${JSON.parse(body).UserName}' in Database.`)
@@ -73,7 +76,8 @@ app.put(createUsersRoot, (req, res) => {
     });
 });
 
-app.put(loginUserRoot, (req, res) => {
+app.post(loginUserRoot, (req, res) => {
+    console.log("hi");
     let body = "";
     req.on('data', function(chunk) {
         if(chunk != null) {
@@ -82,7 +86,8 @@ app.put(loginUserRoot, (req, res) => {
     });
     req.on('end', function() {
         const sqlQuery = `SELECT UserName, Password FROM users WHERE UserName='${JSON.parse(body).UserName}' and Password='${JSON.parse(body).Password}'`;
-        
+        console.log(JSON.parse(body));
+
         // console.log(sqlQuery);
         db.query(sqlQuery, (err, result) => {
             // console.log(result.UserName);
@@ -90,11 +95,12 @@ app.put(loginUserRoot, (req, res) => {
                 res.status(404).send(`Unable to store '${JSON.parse(body).UserName}' in Database.`)
             }
             console.log(result.length);
-            if (result.length == 0) {
+            if (result.length === 0) {
                 res.status(401).send(`'${JSON.parse(body).UserName}' was not found in DB`);
             } else {
                 res.status(200).send(`'${JSON.parse(body).UserName}' was found in DB`);
             }
+
         });
     });
 });

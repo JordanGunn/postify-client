@@ -1,9 +1,6 @@
 <template>
   <div>
     <div v-if="auth">
-      {{ message }}
-    </div>
-    <div v-else>
       <div id="maincontainer">
         <p class="title">Postify API Admin</p>
 
@@ -20,7 +17,7 @@
             type="text"
             v-model="getUserParams.id"
           />
-          <button class="userbutton" @click="getUser">Get User</button>
+          <button class="userbutton" @click="getUser(getUserParams.id)">Get User</button>
         </div>
 
         <div id="usercontainer">
@@ -54,7 +51,7 @@
               v-model="addUserParams.password"
             />
           </div>
-          <button id="submitbutton" class="button" @click="addUser(getUserParams.id)">
+          <button id="submitbutton" class="button" @click="addUser()">
             Add User
           </button>
         </div>
@@ -67,6 +64,7 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import {getUser} from "@/client/user";
+import router from "@/router";
 
 export default {
   // eslint-disable-next-line
@@ -90,6 +88,8 @@ export default {
     const message = ref("Not logged in...");
     const store = useStore();
     const auth = computed(() => store.state.authenticated);
+
+    if (!store.state.authenticated) { router.push("/login") }
 
     // onMounted(() => {
     //   console.log(this.$refs)
@@ -115,63 +115,63 @@ export default {
   },
 
   methods: {
-    getUser: (id) => {
-      // if (id) {
-      //   const userInfo = await document.getElementById("userinfo");
-      //   const response = await getUser(this.getUserParams.id);
-      //   const users = await JSON.parse(response.data);
-      //   if (!users) {
-      //     userInfo.innerHTML = "User Id not found.";
-      //   } else {
-      //     userInfo.innerHTML = `----- User Id: '${users[0].UserId}'-----\n`;
-      //     userInfo.innerHTML += `Username: '${users[0].UserName}'\n`;
-      //     userInfo.innerHTML += `First Name: '${users[0].FirstName}'\n`;
-      //     userInfo.innerHTML += `Last Name: '${users[0].LastName}'\n`;
-      //     userInfo.innerHTML += `Date Joined: '${users[0].JoinDate}'\n`;
-      //     userInfo.innerHTML += `\n`;
-      //   }
-      // }
-
-
-
-
-
-      const GET = "GET";
-      const xhttp = new XMLHttpRequest();
-
-      const getUserRoot =
-        "http://localhost:8888/4537/termproject/api/v1/user/?userId=";
-
-      const userInfo = document.getElementById("userinfo");
-
-      console.log(id);
-      let url = getUserRoot + id;
+    getUser: async (id) => {
       if (id) {
-        xhttp.open(GET, url, true);
-        xhttp.setRequestHeader(
-          "Content-type",
-          "application/json; charset=utf-8"
-        );
-        xhttp.send();
-        xhttp.onreadystatechange = function () {
-          // console.log(this.responseText);
-          if (this.readyState == 4 && this.status == 200) {
-            const users = JSON.parse(this.responseText);
-            // console.log(users);
-            console.log(id);
-            if (users.length == 0 || !id.trim().length || id == "") {
-              userInfo.innerHTML = "User Id not found.";
-            } else {
-              userInfo.innerHTML = `----- User Id: '${users[0].UserId}'-----\n`;
-              userInfo.innerHTML += `Username: '${users[0].UserName}'\n`;
-              userInfo.innerHTML += `First Name: '${users[0].FirstName}'\n`;
-              userInfo.innerHTML += `Last Name: '${users[0].LastName}'\n`;
-              userInfo.innerHTML += `Date Joined: '${users[0].JoinDate}'\n`;
-              userInfo.innerHTML += `\n`;
-            }
-          }
-        };
+        const userInfo = await document.getElementById("userinfo");
+        const response = await getUser(id);
+        const users = response.data;
+        if (!users) {
+          userInfo.innerHTML = "User Id not found.";
+        } else {
+          userInfo.innerHTML = `----- User Id: '${users[0].UserId}'-----\n`;
+          userInfo.innerHTML += `Username: '${users[0].UserName}'\n`;
+          userInfo.innerHTML += `First Name: '${users[0].FirstName}'\n`;
+          userInfo.innerHTML += `Last Name: '${users[0].LastName}'\n`;
+          userInfo.innerHTML += `Date Joined: '${users[0].JoinDate}'\n`;
+          userInfo.innerHTML += `\n`;
+        }
       }
+
+
+
+
+
+      // const GET = "GET";
+      // const xhttp = new XMLHttpRequest();
+      //
+      // const getUserRoot =
+      //   "http://localhost:8888/4537/termproject/api/v1/user/?userId=";
+      //
+      // const userInfo = document.getElementById("userinfo");
+      //
+      // console.log(id);
+      // let url = getUserRoot + id;
+      // if (id) {
+      //   xhttp.open(GET, url, true);
+      //   xhttp.setRequestHeader(
+      //     "Content-type",
+      //     "application/json; charset=utf-8"
+      //   );
+      //   xhttp.send();
+      //   xhttp.onreadystatechange = function () {
+      //     // console.log(this.responseText);
+      //     if (this.readyState == 4 && this.status == 200) {
+      //       const users = JSON.parse(this.responseText);
+      //       // console.log(users);
+      //       console.log(id);
+      //       if (users.length == 0 || !id.trim().length || id == "") {
+      //         userInfo.innerHTML = "User Id not found.";
+      //       } else {
+      //         userInfo.innerHTML = `----- User Id: '${users[0].UserId}'-----\n`;
+      //         userInfo.innerHTML += `Username: '${users[0].UserName}'\n`;
+      //         userInfo.innerHTML += `First Name: '${users[0].FirstName}'\n`;
+      //         userInfo.innerHTML += `Last Name: '${users[0].LastName}'\n`;
+      //         userInfo.innerHTML += `Date Joined: '${users[0].JoinDate}'\n`;
+      //         userInfo.innerHTML += `\n`;
+      //       }
+      //     }
+      //   };
+      // }
     },
 
     getAllUsers(event) {
@@ -215,10 +215,10 @@ export default {
 
       const userInfo = document.getElementById("userinfo");
 
-      let firstName = this.firstnameinput;
-      let lastName = this.lastnameinput;
-      let userName = this.usernameinput;
-      let password = this.passwordinput;
+      let firstName = this.addUserParams.firstName
+      let lastName = this.addUserParams.lastName
+      let userName = this.addUserParams.username
+      let password = this.addUserParams.password
       let paramsJson = {
         FirstName: firstName,
         LastName: lastName,
