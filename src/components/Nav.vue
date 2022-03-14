@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
 
-      <div id="home-postify">
+      <div id="admin-postify">
         <router-link
             to="/"
             class="navbar-brand"
@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style>
-  #home-postify {
+  #admin-postify {
 
   }
 </style>

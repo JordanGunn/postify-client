@@ -3,7 +3,7 @@
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     <div class="form-floating">
       <input
-          v-model="data.email"
+          v-model="data.username"
           type="email"
           class="form-control"
           placeholder="name@example.com"
@@ -25,21 +25,23 @@
 
 <script>
 import { reactive } from "vue";
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
+import appConfig from "../../appConfig"
+
 export default {
   // eslint-disable-next-line
   name: "Login",
 
   setup() {
     const data = reactive({
-      email: '',
+      username: '',
       password: '',
     });
 
     const router = useRouter();
 
     const submit = async () => {
-      await fetch ("http://localhost:8080/api/login", {
+      await fetch (`${appConfig.PATH_API_ABSOLUTE}/login`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'

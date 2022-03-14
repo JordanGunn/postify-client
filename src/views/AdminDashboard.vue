@@ -54,7 +54,7 @@
               v-model="addUserParams.password"
             />
           </div>
-          <button id="submitbutton" class="button" @click="addUser">
+          <button id="submitbutton" class="button" @click="addUser(getUserParams.id)">
             Add User
           </button>
         </div>
@@ -66,11 +66,11 @@
 <script>
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
+import {getUser} from "@/client/user";
 
 export default {
   // eslint-disable-next-line
-  name: "Home",
-
+  name: "AdminDashboard",
   data () {
     return {
       addUserParams: {
@@ -82,9 +82,9 @@ export default {
       getUserParams: {
         id: null,
       },
-
     };
   },
+
 
   setup() {
     const message = ref("Not logged in...");
@@ -115,7 +115,25 @@ export default {
   },
 
   methods: {
-    getUser(event) {
+    getUser: (id) => {
+      // if (id) {
+      //   const userInfo = await document.getElementById("userinfo");
+      //   const response = await getUser(this.getUserParams.id);
+      //   const users = await JSON.parse(response.data);
+      //   if (!users) {
+      //     userInfo.innerHTML = "User Id not found.";
+      //   } else {
+      //     userInfo.innerHTML = `----- User Id: '${users[0].UserId}'-----\n`;
+      //     userInfo.innerHTML += `Username: '${users[0].UserName}'\n`;
+      //     userInfo.innerHTML += `First Name: '${users[0].FirstName}'\n`;
+      //     userInfo.innerHTML += `Last Name: '${users[0].LastName}'\n`;
+      //     userInfo.innerHTML += `Date Joined: '${users[0].JoinDate}'\n`;
+      //     userInfo.innerHTML += `\n`;
+      //   }
+      // }
+
+
+
 
 
       const GET = "GET";
@@ -126,11 +144,9 @@ export default {
 
       const userInfo = document.getElementById("userinfo");
 
-      // console.log(this.getuserinput);
-
-      let userId = this.getuserinput;
-      let url = getUserRoot + userId;
-      if (event) {
+      console.log(id);
+      let url = getUserRoot + id;
+      if (id) {
         xhttp.open(GET, url, true);
         xhttp.setRequestHeader(
           "Content-type",
@@ -142,8 +158,8 @@ export default {
           if (this.readyState == 4 && this.status == 200) {
             const users = JSON.parse(this.responseText);
             // console.log(users);
-            console.log(userId);
-            if (users.length == 0 || !userId.trim().length || userId == "") {
+            console.log(id);
+            if (users.length == 0 || !id.trim().length || id == "") {
               userInfo.innerHTML = "User Id not found.";
             } else {
               userInfo.innerHTML = `----- User Id: '${users[0].UserId}'-----\n`;
