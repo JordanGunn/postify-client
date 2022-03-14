@@ -2,16 +2,22 @@
   <form @submit.prevent="submit">
     <h1 class="h3 mb-3 fw-normal">Registration</h1>
     <input
-        v-model="data.name"
+        v-model="data.firstname"
         class="form-control"
         placeholder="Name"
         required
     >
     <input
-        v-model="data.email"
-        type="email"
+        v-model="data.lastname"
         class="form-control"
-        placeholder="Email"
+        placeholder="Name"
+        required
+    >
+
+    <input
+        v-model="data.username"
+        class="form-control"
+        placeholder="Name"
         required
     >
     <input
@@ -35,8 +41,9 @@ export default {
   name: "Register",
   setup() {
     const data = reactive({
-      name: '',
-      email: '',
+      firstname: '',
+      lastname: '',
+      username: '',
       password: ''
     });
     const router = useRouter();
