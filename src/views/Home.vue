@@ -18,7 +18,7 @@
             class="wordinput"
             placeholder="Enter User Id..."
             type="text"
-            v-model="getuserinput"
+            v-model="getUserParams.id"
           />
           <button class="userbutton" @click="getUser">Get User</button>
         </div>
@@ -30,28 +30,28 @@
               class="wordinput"
               placeholder="Enter First Name..."
               type="text"
-              v-model="firstnameinput"
+              v-model="addUserParams.firstName"
             />
             <input
               id="lastnameinput"
               class="wordinput"
               placeholder="Enter Last Name..."
               type="text"
-              v-model="lastnameinput"
+              v-model="addUserParams.lastName"
             />
             <input
               id="usernameinput"
               class="wordinput"
               placeholder="Enter Username..."
               type="text"
-              v-model="usernameinput"
+              v-model="addUserParams.username"
             />
             <input
               id="passwordinput"
               class="wordinput"
               placeholder="Enter Password..."
               type="text"
-              v-model="passwordinput"
+              v-model="addUserParams.password"
             />
           </div>
           <button id="submitbutton" class="button" @click="addUser">
@@ -71,13 +71,18 @@ export default {
   // eslint-disable-next-line
   name: "Home",
 
-  data: function () {
+  data () {
     return {
-      getuserinput: null,
-      firstnameinput: null,
-      lastnameinput: null,
-      usernameinput: null,
-      passwordinput: null,
+      addUserParams: {
+        firstName: null,
+        lastName: null,
+        username: null,
+        password: null,
+      },
+      getUserParams: {
+        id: null,
+      },
+
     };
   },
 
@@ -111,6 +116,8 @@ export default {
 
   methods: {
     getUser(event) {
+
+
       const GET = "GET";
       const xhttp = new XMLHttpRequest();
 
